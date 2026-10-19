@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafschafter Wirtshaus Duisburg | Tradition & Moderne am Innenhafen</title>
+    <meta name="description" content="Ehrliche deutsche Küche, bayrische Klassiker und moderne vegane Highlights direkt am Duisburger Innenhafen. Genießen Sie Gastfreundschaft am Philosophenweg 33.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wirtshaus: {
+                            dark: '#1a1816',
+                            surface: '#24201d',
+                            card: '#2e2925',
+                            accent: '#d97706', // Warm Amber Gold
+                            accentHover: '#b45309',
+                            cream: '#fdfbf7',
+                            muted: '#a39e93',
+                            border: '#3d3732'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1816;
+            color: #fdfbf7;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1816;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d3732;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d97706;
+        }
+        .hero-overlay {
+            background: linear-gradient(180deg, rgba(26,24,22,0.85) 0%, rgba(26,24,22,0.65) 50%, rgba(26,24,22,1) 100%);
+        }
+        .glass-nav {
+            background: rgba(26, 24, 22, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-600 selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-40 glass-nav border-b border-wirtshaus-border transition-all duration-300" id="mainHeader">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-500/40 flex items-center justify-center text-amber-500 group-hover:bg-amber-600 group-hover:text-white transition-all">
+                    <i class="fa-solid fa-beer-mug-empty text-xl"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-lg font-bold tracking-wide text-white group-hover:text-amber-500 transition-colors">Grafschafter</span>
+                    <span class="text-xs tracking-widest uppercase text-amber-500/80 font-medium -mt-1">Wirtshaus Duisburg</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-8 text-sm font-medium">
+                <a href="#speisekarte" class="text-stone-300 hover:text-amber-500 transition-colors">Speisekarte</a>
+                <a href="#fruehstueck" class="text-stone-300 hover:text-amber-500 transition-colors">Frühstück & Brotzeit</a>
+                <a href="#uber-uns" class="text-stone-300 hover:text-amber-500 transition-colors">Über Uns</a>
+                <a href="#galerie" class="text-stone-300 hover:text-amber-500 transition-colors">Galerie</a>
+                <a href="#kontakt" class="text-stone-300 hover:text-amber-500 transition-colors">Kontakt & Anfahrt</a>
+            </nav>
+
+            <!-- Status & Action CTAs -->
+            <div class="hidden sm:flex items-center space-x-4">
+                <!-- Live Open Status -->
+                <div class="flex items-center space-x-2 bg-wirtshaus-surface px-3 py-1.5 rounded-full border border-wirtshaus-border text-xs">
+                    <span id="statusIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="statusText" class="text-stone-300 font-medium">Geöffnet</span>
+                </div>
+
+                <button onclick="openModal()" class="bg-amber-600 hover:bg-amber-500 text-white font-medium text-sm px-5 py-2.5 rounded-lg transition-all transform hover:-translate-y-0.5 shadow-lg shadow-amber-600/20 flex items-center space-x-2">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Tisch Reservieren</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-stone-300 hover:text-white focus:outline-none p-2" aria-label="Menu">
+                <i class="fa-solid fa-bars text-2xl" id="menuIcon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-wirtshaus-surface border-b border-wirtshaus-border px-4 pt-2 pb-6 space-y-3">
+            <div class="flex items-center justify-between pb-3 border-b border-wirtshaus-border/50">
+                <div class="flex items-center space-x-2 text-xs">
+                    <span id="statusIndicatorMobile" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span id="statusTextMobile" class="text-stone-300">Geöffnet</span>
+                </div>
+            </div>
+            <a href="#speisekarte" onclick="toggleMobileMenu()" class="block py-2 text-stone-300 hover:text-amber-500 font-medium">Speisekarte</a>
+            <a href="#fruehstueck" onclick="toggleMobileMenu()" class="block py-2 text-stone-300 hover:text-amber-500 font-medium">Frühstück & Brotzeit</a>
+            <a href="#uber-uns" onclick="toggleMobileMenu()" class="block py-2 text-stone-300 hover:text-amber-500 font-medium">Über Uns</a>
+            <a href="#galerie" onclick="toggleMobileMenu()" class="block py-2 text-stone-300 hover:text-amber-500 font-medium">Galerie</a>
+            <a href="#kontakt" onclick="toggleMobileMenu()" class="block py-2 text-stone-300 hover:text-amber-500 font-medium">Kontakt & Anfahrt</a>
+            
+            <button onclick="toggleMobileMenu(); openModal();" class="w-full mt-3 bg-amber-600 hover:bg-amber-500 text-white font-medium py-3 rounded-lg flex items-center justify-center space-x-2">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span>Tisch Reservieren</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="mt-20">
+
+        <!-- Hero Section -->
+        <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=1920&auto=format&fit=crop" 
+                     alt="Wirtshaus Atmosphäre Duisburg" 
+                     class="w-full h-full object-cover object-center scale-105 transition-transform duration-10000" id="heroImg">
+                <div class="absolute inset-0 hero-overlay"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center py-20">
+                <div class="inline-flex items-center space-x-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-6">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Duisburger Innenhafen</span>
+                </div>
+
+                <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-white tracking-tight leading-tight mb-6">
+                    Heimat des guten Geschmacks <br class="hidden sm:block">am Duisburger Innenhafen
+                </h1>
+
+                <p class="text-lg sm:text-xl text-stone-300 max-w-3xl mx-auto mb-10 font-light leading-relaxed">
+                    Ehrliche deutsche Küche, bayrische Klassiker und moderne vegane Highlights – direkt am Philosophenweg.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#speisekarte" class="w-full sm:w-auto bg-amber-600 hover:bg-amber-500 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-xl shadow-amber-600/25 flex items-center justify-center space-x-3 group">
+                        <span>Speisekarte erkunden</span>
+                        <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    
+                    <button onclick="openModal()" class="w-full sm:w-auto bg-wirtshaus-surface/90 hover:bg-wirtshaus-card text-white border border-stone-600 font-semibold px-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur-md">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Tisch online reservieren</span>
+                    </button>
+                </div>
+
+                <!-- Info Badges -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 text-left border-t border-stone-800/80 pt-8 max-w-4xl mx-auto">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-utensils"></i></div>
+                        <div>
+                            <div class="text-white text-sm font-semibold">Frisch & Regional</div>
+                            <div class="text-stone-400 text-xs">Höchste Qualität</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-glass-water"></i></div>
+                        <div>
+                            <div class="text-white text-sm font-semibold">Frisch Gezapft</div>
+                            <div class="text-stone-400 text-xs">König Pilsener & Bierspezialitäten</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-sun"></i></div>
+                        <div>
+                            <div class="text-white text-sm font-semibold">Hafen-Terrasse</div>
+                            <div class="text-stone-400 text-xs">Direkt am Wasser</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-amber-500 text-2xl"><i class="fa-solid fa-leaf"></i></div>
+                        <div>
+                            <div class="text-white text-sm font-semibold">Vegan & Veggie</div>
+                            <div class="text-stone-400 text-xs">Große Auswahl</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Speisekarte Section -->
+        <section id="speisekarte" class="py-20 bg-wirtshaus-dark border-t border-wirtshaus-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section Title -->
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-amber-500 font-semibold text-xs tracking-widest uppercase">Kulinarischer Genuss</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">Unsere Speisekarte</h2>
+                    <p class="text-stone-400 text-sm sm:text-base">
+                        Entdecken Sie traditionelle Rezepte, saftige Spezialitäten und moderne pflanzliche Köstlichkeiten.
+                    </p>
+                </div>
+
+                <!-- Search & Filters Container -->
+                <div class="mb-10 space-y-6">
+                    <!-- Search Bar -->
+                    <div class="max-w-md mx-auto relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                        <input type="text" id="menuSearch" oninput="filterMenuItems()" 
+                               placeholder="Gerichte oder Zutaten suchen..." 
+                               class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl pl-11 pr-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:border-amber-500 transition-colors text-sm">
+                    </div>
+
+                    <!-- Category Tabs -->
+                    <div class="flex items-center justify-start md:justify-center space-x-2 overflow-x-auto pb-4 scrollbar-none" id="categoryContainer">
+                        <button onclick="setCategory('all')" class="category-btn active bg-amber-600 text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-full whitespace-nowrap transition-all shadow-md">
+                            Alle Gerichte
+                        </button>
+                        <button onclick="setCategory('klassiker')" class="category-btn bg-wirtshaus-surface hover:bg-wirtshaus-card text-stone-300 font-medium text-xs sm:text-sm px-4 py-2.5 rounded-full border border-wirtshaus-border whitespace-nowrap transition-all">
+                            Wirtshaus Klassiker
+                        </button>
+                        <button onclick="setCategory('brotzeit')" class="category-btn bg-wirtshaus-surface hover:bg-wirtshaus-card text-stone-300 font-medium text-xs sm:text-sm px-4 py-2.5 rounded-full border border-wirtshaus-border whitespace-nowrap transition-all">
+                            Frühstück & Brotzeit
+                        </button>
+                        <button onclick="setCategory('flammkuchen')" class="category-btn bg-wirtshaus-surface hover:bg-wirtshaus-card text-stone-300 font-medium text-xs sm:text-sm px-4 py-2.5 rounded-full border border-wirtshaus-border whitespace-nowrap transition-all">
+                            Flammkuchen
+                        </button>
+                        <button onclick="setCategory('vegan')" class="category-btn bg-wirtshaus-surface hover:bg-wirtshaus-card text-stone-300 font-medium text-xs sm:text-sm px-4 py-2.5 rounded-full border border-wirtshaus-border whitespace-nowrap transition-all">
+                            Vegan & Veggie
+                        </button>
+                        <button onclick="setCategory('desserts')" class="category-btn bg-wirtshaus-surface hover:bg-wirtshaus-card text-stone-300 font-medium text-xs sm:text-sm px-4 py-2.5 rounded-full border border-wirtshaus-border whitespace-nowrap transition-all">
+                            Süßes & Desserts
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Menu Items Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="menuGrid">
+                    <!-- Menu items dynamically rendered via JS -->
+                </div>
+
+                <!-- Empty Search State -->
+                <div id="noResults" class="hidden text-center py-12">
+                    <i class="fa-solid fa-utensils text-4xl text-stone-600 mb-3"></i>
+                    <p class="text-stone-400 font-medium">Keine passenden Gerichte gefunden.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Über Uns & Philosophie Section -->
+        <section id="uber-uns" class="py-20 bg-wirtshaus-surface border-t border-wirtshaus-border relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- Text Side -->
+                    <div>
+                        <span class="text-amber-500 font-semibold text-xs tracking-widest uppercase">Gastfreundschaft mit Tradition</span>
+                        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-2 mb-6">
+                            Herzlich willkommen im Grafschafter Wirtshaus
+                        </h2>
+                        
+                        <div class="space-y-4 text-stone-300 text-sm sm:text-base leading-relaxed">
+                            <p>
+                                Gelegen am malerischen Duisburger Innenhafen – einer faszinierenden Mischung aus historischer Industriearchitektur und moderner Promenade – steht das Grafschafter Wirtshaus für ehrliches Handwerk, regionale Zutaten und herzerwärmende Gastfreundschaft.
+                            </p>
+                            <p>
+                                Ob für ein ausgiebiges Wirtshaus-Frühstück am Wochenende, den herzhaften Zwiebelrostbraten zum Feierabend oder ein kühles König Pilsener auf unserer sonnigen Hafen-Terrasse: Bei uns kommen Liebhaber der traditionellen deutschen Küche ebenso auf ihre Kosten wie Freunde moderner, veganer Spezialitäten.
+                            </p>
+                            <p>
+                                Wir verbinden Gemütlichkeit mit kulinarischem Anspruch – ein Ort für Freunde, Familie und genussvolle Stunden.
+                            </p>
+                        </div>
+
+                        <!-- Key Details -->
+                        <div class="mt-8 grid grid-cols-2 gap-4 border-t border-wirtshaus-border pt-6">
+                            <div>
+                                <div class="text-amber-500 font-serif text-2xl font-bold">100+</div>
+                                <div class="text-stone-400 text-xs">Sitzplätze auf der Terrasse</div>
+                            </div>
+                            <div>
+                                <div class="text-amber-500 font-serif text-2xl font-bold">Frisch</div>
+                                <div class="text-stone-400 text-xs">Regional bezogene Zutaten</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Showcase Side -->
+                    <div class="relative">
+                        <div class="relative z-10 rounded-2xl overflow-hidden border border-wirtshaus-border shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1000&auto=format&fit=crop" 
+                                 alt="Wirtshaus Innenraum" 
+                                 class="w-full h-[420px] object-cover">
+                        </div>
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-6 -left-6 z-20 bg-wirtshaus-card border border-amber-500/30 p-5 rounded-2xl shadow-xl hidden sm:block">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-amber-600/20 text-amber-500 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-award"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white text-sm font-bold">Markus Grimm Kooperation</div>
+                                    <div class="text-stone-400 text-xs">Exklusive Käsebratwurst (#Wurstfluencer)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Galerie & Atmosphäre -->
+        <section id="galerie" class="py-20 bg-wirtshaus-dark border-t border-wirtshaus-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-amber-500 font-semibold text-xs tracking-widest uppercase">Einblicke</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">Galerie & Atmosphäre</h2>
+                    <p class="text-stone-400 text-sm">Werfen Sie einen Blick auf unsere Räumlichkeiten, Speisen und den Innenhafen.</p>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="group relative rounded-xl overflow-hidden border border-wirtshaus-border h-64">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop" alt="Innenbereich Wirtshaus" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-medium text-sm">Urig-moderner Gastraum</span>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-xl overflow-hidden border border-wirtshaus-border h-64">
+                        <img src="https://images.unsplash.com/photo-1578474846511-04ba529f0b88?q=80&w=800&auto=format&fit=crop" alt="Hafen Terrasse Duisburg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-medium text-sm">Terrasse am Innenhafen</span>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-xl overflow-hidden border border-wirtshaus-border h-64">
+                        <img src="https://images.unsplash.com/photo-1535958636474-b021ee887b13?q=80&w=800&auto=format&fit=crop" alt="Frisch gezapftes Bier" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-medium text-sm">Frisch gezapfte Bierspezialitäten</span>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-xl overflow-hidden border border-wirtshaus-border h-64">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop" alt="Steak und Fleischgerichte" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-medium text-sm">Zartes Roastbeef & Zwiebelrostbraten</span>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-xl overflow-hidden border border-wirtshaus-border h-64">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop" alt="Knuspriger Flammkuchen" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-medium text-sm">Ofenfrische Flammkuchen</span>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-xl overflow-hidden border border-wirtshaus-border h-64">
+                        <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800&auto=format&fit=crop" alt="Dessert Kaiserschmarrn" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white font-medium text-sm">Hausgemachter Kaiserschmarrn</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Kontakt, Anfahrt & Öffnungszeiten -->
+        <section id="kontakt" class="py-20 bg-wirtshaus-surface border-t border-wirtshaus-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-amber-500 font-semibold text-xs tracking-widest uppercase">Besuchen Sie Uns</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 mb-4">Kontakt & Anfahrt</h2>
+                    <p class="text-stone-400 text-sm sm:text-base">
+                        Wir freuen uns auf Ihren Besuch im Grafschafter Wirtshaus am Duisburger Innenhafen.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1: Öffnungszeiten -->
+                    <div class="bg-wirtshaus-card border border-wirtshaus-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-600/20 text-amber-500 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-white mb-4">Öffnungszeiten</h3>
+                            
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex justify-between pb-2 border-b border-wirtshaus-border/60">
+                                    <span class="text-stone-400">Montag – Freitag</span>
+                                    <span class="text-white font-medium">11:00 – 23:00 Uhr</span>
+                                </li>
+                                <li class="flex justify-between pb-2 border-b border-wirtshaus-border/60">
+                                    <span class="text-stone-400">Samstag & Sonntag</span>
+                                    <span class="text-white font-medium">09:00 – 23:00 Uhr</span>
+                                </li>
+                                <li class="flex justify-between pb-2 border-b border-wirtshaus-border/60">
+                                    <span class="text-stone-400">Feiertage</span>
+                                    <span class="text-white font-medium">09:00 – 23:00 Uhr</span>
+                                </li>
+                                <li class="pt-2 text-xs text-amber-500 font-medium">
+                                    <i class="fa-solid fa-mug-hot mr-1"></i> Wirtshaus-Frühstück: Sa & So 09:00 - 12:00 Uhr
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-wirtshaus-border">
+                            <span class="text-xs text-stone-400">Durchgehend warme Küche bis 22:00 Uhr</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Kontakt & Adresse -->
+                    <div class="bg-wirtshaus-card border border-wirtshaus-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-600/20 text-amber-500 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-white mb-4">Adresse & Kontakt</h3>
+                            
+                            <div class="space-y-4 text-sm text-stone-300">
+                                <p class="flex items-start space-x-3">
+                                    <i class="fa-solid fa-map-pin text-amber-500 mt-1"></i>
+                                    <span>
+                                        <strong class="text-white block">Grafschafter Wirtshaus Duisburg</strong>
+                                        Philosophenweg 33<br>
+                                        47051 Duisburg (Innenhafen)
+                                    </span>
+                                </p>
+
+                                <p class="flex items-center space-x-3">
+                                    <i class="fa-solid fa-phone text-amber-500"></i>
+                                    <a href="tel:+4920380491250" class="hover:text-amber-500 transition-colors">+49 (0)203 80491250</a>
+                                </p>
+
+                                <p class="flex items-center space-x-3">
+                                    <i class="fa-solid fa-envelope text-amber-500"></i>
+                                    <a href="mailto:info@wirtshaus-duisburg.de" class="hover:text-amber-500 transition-colors">info@wirtshaus-duisburg.de</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-wirtshaus-border flex space-x-3">
+                            <a href="https://maps.google.com/?q=Philosophenweg+33+47051+Duisburg" target="_blank" rel="noopener" class="w-full bg-wirtshaus-surface hover:bg-stone-700 text-white text-xs font-semibold py-3 rounded-lg text-center transition-colors border border-stone-600 flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-route text-amber-500"></i>
+                                <span>In Google Maps öffnen</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Reservierung Schnellauswahl -->
+                    <div class="bg-gradient-to-br from-amber-900/30 to-wirtshaus-card border border-amber-600/30 rounded-2xl p-6 sm:p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-amber-600 text-white flex items-center justify-center text-xl mb-6 shadow-lg shadow-amber-600/30">
+                                <i class="fa-regular fa-calendar-check"></i>
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-white mb-2">Tisch Reservieren</h3>
+                            <p class="text-stone-300 text-sm mb-6">
+                                Sichern Sie sich bequem online Ihren Lieblingsplatz im Gastraum oder auf der Hafen-Terrasse.
+                            </p>
+
+                            <ul class="space-y-2 text-xs text-stone-300 mb-6">
+                                <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2"></i> Sofortige Bestätigung</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2"></i> Gruppenanfragen willkommen</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-amber-500 mr-2"></i> Tischwahl (Innen vs. Terrasse)</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="openModal()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-amber-600/25 flex items-center justify-center space-x-2">
+                            <span>Jetzt Tisch sichern</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-stone-400 text-xs border-t border-wirtshaus-border py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-beer-mug-empty text-amber-500 text-lg"></i>
+                        <span class="font-serif text-white font-bold text-base">Grafschafter Wirtshaus</span>
+                    </div>
+                    <p class="text-stone-400 leading-relaxed">
+                        Traditionelle deutsche Küche & bayrische Schmankerl am Duisburger Innenhafen.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#speisekarte" class="hover:text-amber-500 transition-colors">Speisekarte</a></li>
+                        <li><a href="#uber-uns" class="hover:text-amber-500 transition-colors">Über Uns</a></li>
+                        <li><a href="#galerie" class="hover:text-amber-500 transition-colors">Galerie</a></li>
+                        <li><a href="#kontakt" class="hover:text-amber-500 transition-colors">Kontakt & Öffnungszeiten</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">Standort</h4>
+                    <p class="leading-relaxed">
+                        Philosophenweg 33<br>
+                        47051 Duisburg<br>
+                        Deutschland
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">Social Media & Anfragen</h4>
+                    <div class="flex space-x-3 mb-4">
+                        <a href="https://facebook.com" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-wirtshaus-surface flex items-center justify-center text-stone-300 hover:text-amber-500 hover:bg-wirtshaus-card transition-all">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener" class="w-8 h-8 rounded-full bg-wirtshaus-surface flex items-center justify-center text-stone-300 hover:text-amber-500 hover:bg-wirtshaus-card transition-all">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                    <p class="text-stone-500">Tel: +49 (0)203 80491250</p>
+                </div>
+
+            </div>
+
+            <div class="border-t border-wirtshaus-border/50 pt-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <p>&copy; <span id="currentYear"></span> Grafschafter Wirtshaus Duisburg. Alle Rechte vorbehalten.</p>
+                <div class="flex space-x-6 text-stone-500">
+                    <a href="#" class="hover:text-stone-300 transition-colors">Impressum</a>
+                    <a href="#" class="hover:text-stone-300 transition-colors">Datenschutz</a>
+                    <a href="#" class="hover:text-stone-300 transition-colors">AGB</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Table Reservation Modal -->
+    <div id="reservationModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-wirtshaus-card border border-wirtshaus-border rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-stone-400 hover:text-white text-xl p-2" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="mb-6">
+                <span class="text-amber-500 font-semibold text-xs tracking-widest uppercase">Online Reservierung</span>
+                <h3 class="font-serif text-2xl font-bold text-white mt-1">Tisch im Wirtshaus buchen</h3>
+            </div>
+
+            <!-- Form -->
+            <form id="reservationForm" onsubmit="handleReservation(event)" class="space-y-4">
+                
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Vollständiger Name *</label>
+                    <input type="text" required placeholder="z.B. Max Mustermann" class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:border-amber-500 text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">E-Mail Adresse *</label>
+                        <input type="email" required placeholder="ihre@email.de" class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:border-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Telefonnummer *</label>
+                        <input type="tel" required placeholder="+49 123 456789" class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:border-amber-500 text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Datum *</label>
+                        <input type="date" id="resDate" required class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Uhrzeit *</label>
+                        <select required class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+                            <option value="">Wählen...</option>
+                            <option>11:30 Uhr</option>
+                            <option>12:00 Uhr</option>
+                            <option>13:00 Uhr</option>
+                            <option>17:00 Uhr</option>
+                            <option>18:00 Uhr</option>
+                            <option>19:00 Uhr</option>
+                            <option>20:00 Uhr</option>
+                            <option>21:00 Uhr</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Personen *</label>
+                        <select required class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+                            <option>2 Personen</option>
+                            <option>3 Personen</option>
+                            <option>4 Personen</option>
+                            <option>5 Personen</option>
+                            <option>6+ Personen</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Sitzbereich Präferenz</label>
+                    <select class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+                        <option>Gastraum (Gemütlich drinnen)</option>
+                        <option>Hafen-Terrasse (Aussicht aufs Wasser)</option>
+                        <option>Keine Präferenz</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-stone-300 uppercase tracking-wider mb-2">Anmerkungen / Sonderwünsche</label>
+                    <textarea rows="2" placeholder="z.B. Hochstuhl benötigt, Allergien..." class="w-full bg-wirtshaus-surface border border-wirtshaus-border rounded-xl px-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:border-amber-500 text-sm"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-amber-600/25 mt-2">
+                    Reservierung Bestätigen
+                </button>
+
+            </form>
+
+            <!-- Success Confirmation Message -->
+            <div id="resSuccess" class="hidden text-center py-8">
+                <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-4 border border-emerald-500/40">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h4 class="font-serif text-2xl font-bold text-white mb-2">Reservierung Erfolgreich!</h4>
+                <p class="text-stone-300 text-sm mb-6">
+                    Vielen Dank. Wir haben Ihre Anfrage erhalten und senden Ihnen eine Bestätigung an Ihre E-Mail-Adresse.
+                </p>
+                <button onclick="closeModal()" class="bg-wirtshaus-surface hover:bg-stone-700 text-white px-6 py-2.5 rounded-xl border border-stone-600 text-sm">
+                    Schließen
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Authentic Menu Database
+        const menuData = [
+            {
+                id: 1,
+                name: "Wirtshaus Gulasch vom Rind",
+                category: "klassiker",
+                price: "25.90 €",
+                desc: "Zart geschmortes Rindergulasch in herzhafter Altbier-Soße, serviert mit traditionellen Spinat-Semmelknödeln.",
+                tags: ["Empfehlung"],
+                img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 2,
+                name: "Zwiebelrostbraten vom Roastbeef",
+                category: "klassiker",
+                price: "29.90 €",
+                desc: "Saftiges Roastbeef auf den Punkt gebraten, serviert mit hausgemachten Spätzle, dunkler Jus sowie Schmor- und knusprigen Röstzwiebeln.",
+                tags: ["Klassiker"],
+                img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 3,
+                name: "Markus Grimms Käsebratwurst",
+                category: "klassiker",
+                price: "16.90 €",
+                desc: "Spezialität vom #Wurstfluencer: Herzhafte Käsebratwurst mit cremigem Rahmwirsing und butterweichem Kartoffelstampf.",
+                tags: ["Spezialität"],
+                img: "https://images.unsplash.com/photo-1529042410759-befb1204b468?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 4,
+                name: "Grafschafter Brotzeit",
+                category: "brotzeit",
+                price: "18.90 €",
+                desc: "Reichhaltige Wirtshausplatte mit hausgemachtem Obatzda, ausgwählten Wurst-, Schinken- & Käsespezialitäten und frischer Laugenbrezn.",
+                tags: ["Zum Teilen"],
+                img: "https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 5,
+                name: "Münchner Weißwürste mit Brezn",
+                category: "brotzeit",
+                price: "9.90 €",
+                desc: "Zwei originale Weißwürste im warmen Terrinentopf serviert mit süßem Händlmaier Senf & frischer Brezn. (Optional mit Weißbier +3.60 €)",
+                tags: ["Bayerisch"],
+                img: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 6,
+                name: "Klassischer Elsässer Flammkuchen",
+                category: "flammkuchen",
+                price: "13.50 €",
+                desc: "Hauchdünner krosser Teig mit feiner Creme, deftigem Speckschnitzeln und frischen Zwiebelringen aus dem Steinofen.",
+                tags: ["Kross"],
+                img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 7,
+                name: "Flammkuchen Ziegenkäse & Honig",
+                category: "flammkuchen",
+                price: "15.50 €",
+                desc: "Mit cremigem Ziegenfrischkäse, Rosmarin, walnusskernen und feinem Waldhonig verfeinert.",
+                tags: ["Vegetarisch"],
+                img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 8,
+                name: "In Hülse & Fülle",
+                category: "vegan",
+                price: "16.90 €",
+                desc: "Orientalischer Kichererbseneintopf mit gebratenem Tofu, Koriander, Sesam und frischem Wirtshaus-Brot.",
+                tags: ["Vegan"],
+                img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 9,
+                name: "Veganer Wirtshaus Burger",
+                category: "vegan",
+                price: "18.90 €",
+                desc: "Plant-based Patty im Brioche-Style Bun mit veganem Schmelzkäse, Röstzwiebeln, BBQ-Sauce und knusprigen Fritten.",
+                tags: ["Vegan"],
+                img: "https://images.unsplash.com/photo-1520072959219-c595dc870360?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 10,
+                name: "Hausgemachter Kaiserschmarrn",
+                category: "desserts",
+                price: "14.50 €",
+                desc: "Fluffig gebraten mit Rosinen, Mandelstiften, Puderzucker und fruchtigen Preiselbeeren. (Kleine Portion 8.90 €)",
+                tags: ["Süßer Klassiker"],
+                img: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                id: 11,
+                name: "Schwarzwälder Kirsch im Glas",
+                category: "desserts",
+                price: "9.90 €",
+                desc: "Moderne Interpretation mit eingelegten Sauerkirschen, dunklem Biskuit, Sahnecreme und einer Kugel Schoko-Haselnuss Eis.",
+                tags: ["Dessert"],
+                img: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?q=80&w=800&auto=format&fit=crop"
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        // Render Menu Cards
+        function renderMenu() {
+            const grid = document.getElementById('menuGrid');
+            const searchVal = document.getElementById('menuSearch').value.toLowerCase();
+            const noResults = document.getElementById('noResults');
+
+            const filtered = menuData.filter(item => {
+                const matchesCat = currentCategory === 'all' || item.category === currentCategory;
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || 
+                                      item.desc.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-wirtshaus-surface border border-wirtshaus-border rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col sm:flex-row group">
+                    <div class="sm:w-2/5 relative h-48 sm:h-auto overflow-hidden">
+                        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 flex flex-wrap gap-1">
+                            ${item.tags.map(t => `
+                                <span class="bg-wirtshaus-dark/80 backdrop-blur-md text-amber-400 text-[10px] font-semibold px-2 py-0.5 rounded-md border border-amber-500/30">
+                                    ${t}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="sm:w-3/5 p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-serif font-bold text-white text-lg group-hover:text-amber-500 transition-colors">${item.name}</h3>
+                                <span class="text-amber-500 font-serif font-bold text-base ml-2">${item.price}</span>
+                            </div>
+                            <p class="text-stone-400 text-xs sm:text-sm leading-relaxed mb-4">${item.desc}</p>
+                        </div>
+                        <button onclick="openModal()" class="text-xs text-amber-500 font-medium hover:text-amber-400 flex items-center space-x-1 self-start">
+                            <span>Tisch zur Speise buchen</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Category Filter Setup
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white', 'shadow-md');
+                btn.classList.add('bg-wirtshaus-surface', 'text-stone-300', 'border', 'border-wirtshaus-border');
+            });
+
+            event.target.classList.remove('bg-wirtshaus-surface', 'text-stone-300', 'border', 'border-wirtshaus-border');
+            event.target.classList.add('bg-amber-600', 'text-white', 'shadow-md');
+
+            renderMenu();
+        }
+
+        function filterMenuItems() {
+            renderMenu();
+        }
+
+        // Modal Controls
+        function openModal() {
+            document.getElementById('reservationModal').classList.remove('hidden');
+            document.getElementById('reservationForm').classList.remove('hidden');
+            document.getElementById('resSuccess').classList.add('hidden');
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('resDate').setAttribute('min', today);
+        }
+
+        function closeModal() {
+            document.getElementById('reservationModal').classList.add('hidden');
+        }
+
+        function handleReservation(e) {
+            e.preventDefault();
+            document.getElementById('reservationForm').classList.add('hidden');
+            document.getElementById('resSuccess').classList.remove('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Calculate Live German Open/Closed Status
+        function updateOpeningStatus() {
+            const now = new Date();
+            // Convert to German local time
+            const day = now.getDay(); // 0: Sun, 1: Mon, ..., 6: Sat
+            const hour = now.getHours();
+            const min = now.getMinutes();
+            const timeNum = hour + min / 60;
+
+            let isOpen = false;
+
+            if (day >= 1 && day <= 5) {
+                // Mon-Fri: 11:00 - 23:00
+                isOpen = timeNum >= 11 && timeNum < 23;
+            } else {
+                // Sat-Sun: 09:00 - 23:00
+                isOpen = timeNum >= 9 && timeNum < 23;
+            }
+
+            const ind = document.getElementById('statusIndicator');
+            const txt = document.getElementById('statusText');
+            const indM = document.getElementById('statusIndicatorMobile');
+            const txtM = document.getElementById('statusTextMobile');
+
+            if (isOpen) {
+                ind.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse";
+                txt.textContent = "Jetzt Geöffnet";
+                if(indM) indM.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+                if(txtM) txtM.textContent = "Jetzt Geöffnet";
+            } else {
+                ind.className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+                txt.textContent = "Geschlossen";
+                if(indM) indM.className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+                if(txtM) txtM.textContent = "Geschlossen";
+            }
+        }
+
+        // Initialize App
+        window.onload = function() {
+            renderMenu();
+            updateOpeningStatus();
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        };
+    </script>
+</body>
+</html>
